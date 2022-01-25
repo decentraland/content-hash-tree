@@ -28,7 +28,7 @@ export class ContentHashTree {
     return pair.equals(root)
   }
 
-  // keccak256(abi.encode(index, contentHash))
+  // keccak256(abi.encode(index, urn, contentHash))
   public static toNode(
     index: number | BigNumber,
     urn: string,
