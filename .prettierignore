@@ -6,3 +6,4 @@ build
 .nyc_output
 proofs.json
 scripts/proof.json
+scritps/content-hashes.json
