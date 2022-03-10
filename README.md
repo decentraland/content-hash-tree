@@ -3,7 +3,7 @@
 [![NPM version](https://badge.fury.io/js/@dcl%2Fcontent-hash-tree.svg)](https://npmjs.org/package/@dcl/content-hash-tree)
 [![Install Size](https://packagephobia.now.sh/badge?p=@dcl/content-hash-tree@latest)](https://packagephobia.now.sh/result?p=@dcl/content-hash-tree@latest)
 
-## Forked from @uniswap/merkle-distributor
+## Idea from @uniswap/merkle-distributor
 
 ## Local Development
 
@@ -39,15 +39,16 @@ const isPartOfTheTree = verifyProof(0, contentHashes[0], proof, root)
 
 #### CLI (Benchmark)
 
-### Generate a tree with ~10k content hashes
+### Generate a tree with content hashes
 
 `npm run generate-merkle-root:data`
 
-Time to completion 1.049s. Json size: 18mb
+_~10k items: time to completion 788.8ms. Json size: 10mb_
+_~100k items: time to completion 6.7s. Json size: 124mb_
 
 This will generate a `proofs.json` file in the root of the project.
 
-### Verify a single proof of a tree with ~10k leafs
+### Verify a single proof of a tree with ~100k leafs
 
 `npm run verify-merkle-root:proof`
 
