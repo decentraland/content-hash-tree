@@ -24,17 +24,17 @@ if (typeof json !== 'object') throw new Error('Invalid JSON')
 const merkleRootHex = json.merkleRoot
 const merkleRoot = Buffer.from(merkleRootHex.slice(2), 'hex')
 
-const items: { urn: string; contentHash: string }[] = []
+const items: string[] = []
 let valid = true
 
-Object.keys(json.proofs).forEach((urn) => {
-  const claim = json.proofs[urn]
+Object.keys(json.proofs).forEach((contentHash) => {
+  const claim = json.proofs[contentHash]
   const proof = claim.proof.map((p: string) => Buffer.from(p.slice(2), 'hex'))
-  items.push({ contentHash: claim.contentHash, urn })
-  if (verifyProof(claim.index, urn, claim.contentHash, proof, merkleRoot)) {
-    console.log('Verified proof for', claim.index, urn, claim.contentHash)
+  items.push(contentHash)
+  if (verifyProof(claim.index, contentHash, proof, merkleRoot)) {
+    console.log('Verified proof for', claim.index, contentHash)
   } else {
-    console.log('Verification for', urn, claim.contentHash, 'failed')
+    console.log('Verification for', contentHash, 'failed')
     valid = false
   }
 })

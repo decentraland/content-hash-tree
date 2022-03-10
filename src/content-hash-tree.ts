@@ -1,26 +1,23 @@
 import MerkleTree from './merkle-tree'
 import { BigNumber, utils } from 'ethers'
 
-import { Item } from './types'
-
 export class ContentHashTree {
   private readonly tree: MerkleTree
-  constructor(contentHashes: Item[]) {
+  constructor(contentHashes: string[]) {
     this.tree = new MerkleTree(
-      contentHashes.map(({ urn, contentHash }, index) => {
-        return ContentHashTree.toNode(index, urn, contentHash)
+      contentHashes.map((contentHash, index) => {
+        return ContentHashTree.toNode(index, contentHash)
       })
     )
   }
 
   public static verifyProof(
     index: number | BigNumber,
-    urn: string,
     contentHash: string,
     proof: Buffer[],
     root: Buffer
   ): boolean {
-    let pair = ContentHashTree.toNode(index, urn, contentHash)
+    let pair = ContentHashTree.toNode(index, contentHash)
     for (const item of proof) {
       pair = MerkleTree.combinedHash(pair, item)
     }
@@ -28,18 +25,11 @@ export class ContentHashTree {
     return pair.equals(root)
   }
 
-  // keccak256(abi.encode(index, urn, contentHash))
-  public static toNode(
-    index: number | BigNumber,
-    urn: string,
-    contentHash: string
-  ): Buffer {
+  // keccak256(abi.encode(index, contentHash))
+  public static toNode(index: number | BigNumber, contentHash: string): Buffer {
     return Buffer.from(
       utils
-        .solidityKeccak256(
-          ['uint256', 'string', 'string'],
-          [index, urn, contentHash]
-        )
+        .solidityKeccak256(['uint256', 'string'], [index, contentHash])
         .substr(2),
       'hex'
     )
@@ -50,13 +40,7 @@ export class ContentHashTree {
   }
 
   // returns the hex bytes32 values of the proof
-  public getProof(
-    index: number | BigNumber,
-    urn: string,
-    contentHash: string
-  ): string[] {
-    return this.tree.getHexProof(
-      ContentHashTree.toNode(index, urn, contentHash)
-    )
+  public getProof(index: number | BigNumber, contentHash: string): string[] {
+    return this.tree.getHexProof(ContentHashTree.toNode(index, contentHash))
   }
 }

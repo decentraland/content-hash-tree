@@ -13,11 +13,10 @@ contract MerkleContentHash is IMerkleContentHash {
 
     function isValid(
         uint256 index,
-        string memory urn,
         string memory contentHash,
         bytes32[] calldata merkleProof
     ) external view override returns (bool) {
-        bytes32 node = keccak256(abi.encodePacked(index, urn, contentHash));
+        bytes32 node = keccak256(abi.encodePacked(index, contentHash));
 
         return MerkleProof.verify(merkleProof, merkleRoot, node);
     }
