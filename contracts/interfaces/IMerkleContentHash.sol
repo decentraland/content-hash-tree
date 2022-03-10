@@ -8,7 +8,6 @@ interface IMerkleContentHash {
     // Returns whether a given content hash is valid or not.
     function isValid(
         uint256 index,
-        string memory urn,
         string memory contentHash,
         bytes32[] calldata merkleProof
     ) external view returns (bool);
