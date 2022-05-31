@@ -59,5 +59,8 @@
     "generate-merkle-root:data": "ts-node scripts/generate-merkle-root.ts --input scripts/content_hashes.json",
     "verify-merkle-root:proof": "ts-node scripts/verify-merkle-root.ts --input scripts/proof.json",
     "prepublishOnly": "npm run test"
+  },
+  "dependencies": {
+    "ethers": "^5.6.8"
   }
 }
