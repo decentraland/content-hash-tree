@@ -4,7 +4,7 @@ import { Contract } from 'ethers'
 import { ContentHashTree } from '../src/content-hash-tree'
 
 import Distributor from '../build/MerkleContentHash.json'
-import { generateTree, verifyProof } from '../src/index'
+import { generateTree, verifyProof, generateRoot } from '../src/index'
 
 chai.use(solidity)
 
@@ -199,6 +199,18 @@ describe('MerkleDistributor', () => {
 
           const validProof = verifyProof(i, elements[i], proof, root)
           expect(validProof).to.be.true
+        }
+      })
+
+      it('root generation works', () => {
+        const root = Buffer.from(tree.getHexRoot().slice(2), 'hex')
+        for (let i = 0; i < NUM_LEAVES; i += NUM_LEAVES / NUM_SAMPLES) {
+          const proof = tree
+            .getProof(i, elements[i])
+            .map((el: string) => Buffer.from(el.slice(2), 'hex'))
+
+          const generatedRoot = generateRoot(i, elements[i], proof)
+          expect(root.equals(generatedRoot)).to.be.true
         }
       })
 
