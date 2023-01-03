@@ -17,12 +17,7 @@ export class ContentHashTree {
     proof: Buffer[],
     root: Buffer
   ): boolean {
-    let pair = ContentHashTree.toNode(index, contentHash)
-    for (const item of proof) {
-      pair = MerkleTree.combinedHash(pair, item)
-    }
-
-    return pair.equals(root)
+    return this.generateRoot(index, contentHash, proof).equals(root)
   }
 
   public static generateRoot(
