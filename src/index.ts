@@ -35,3 +35,11 @@ export function verifyProof(
 ): boolean {
   return ContentHashTree.verifyProof(index, contentHash, proof, root)
 }
+
+export function generateRoot(
+  index: BigNumber | number,
+  contentHash: string,
+  proof: Buffer[]
+): Buffer {
+  return ContentHashTree.generateRoot(index, contentHash, proof)
+}

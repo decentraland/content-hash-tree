@@ -17,12 +17,20 @@ export class ContentHashTree {
     proof: Buffer[],
     root: Buffer
   ): boolean {
+    return this.generateRoot(index, contentHash, proof).equals(root)
+  }
+
+  public static generateRoot(
+    index: number | BigNumber,
+    contentHash: string,
+    proof: Buffer[]
+  ): Buffer {
     let pair = ContentHashTree.toNode(index, contentHash)
     for (const item of proof) {
       pair = MerkleTree.combinedHash(pair, item)
     }
 
-    return pair.equals(root)
+    return pair
   }
 
   // keccak256(abi.encode(index, contentHash))
