@@ -25,6 +25,19 @@ export class ContentHashTree {
     return pair.equals(root)
   }
 
+  public static generateRoot(
+    index: number | BigNumber,
+    contentHash: string,
+    proof: Buffer[]
+  ): Buffer {
+    let pair = ContentHashTree.toNode(index, contentHash)
+    for (const item of proof) {
+      pair = MerkleTree.combinedHash(pair, item)
+    }
+
+    return pair
+  }
+
   // keccak256(abi.encode(index, contentHash))
   public static toNode(index: number | BigNumber, contentHash: string): Buffer {
     return Buffer.from(
